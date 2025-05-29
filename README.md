@@ -6,7 +6,6 @@
 3. [Implemented Techniques](#implemented-techniques)  
    &nbsp;&nbsp;3.1&nbsp; [LIME](#lime) | 3.2&nbsp; [SHAP](#shap) | 3.3&nbsp; [Grad-CAM](#grad-cam) | 3.4&nbsp; [Guided Backprop & Guided Grad-CAM](#guided-grad-cam) | 3.5&nbsp; [SmoothGrad](#smoothgrad) | 3.6&nbsp; [Layer-wise Relevance Propagation](#lrp) | 3.7&nbsp; [Attention Visualisation](#attention) | 3.8&nbsp; [Wasserstein Adversarial Robustness](#wass)  
 4. [Dataset — CBIS-DDSM](#dataset-cbis-ddsm)  
-6. [Installation & Quick Start](#installation--quick-start)
 
 ---
 
@@ -588,6 +587,7 @@ Sources: TCIA collection notes & Kaggle mirror :contentReference[oaicite:10]{ind
 # Visit: https://wiki.cancerimagingarchive.net/display/Public/CBIS-DDSM
 # Download the manifest file and use TCIA's data retrieval tools
 ```
+### Dataset Directory Structure
 ```markdown
 cbis-ddsm/
 ├── manifest-*/               # TCIA download
