@@ -29,36 +29,32 @@ formulation**, **strengths / caveats**, and a link to the original paper.
 #### • LIME – *Locally Interpretable Model-agnostic Explanations*  
 Learns a sparse linear model  
 $g(x) = \sum_{k=1}^{K} w_k z_k$  
-around the neighbourhood of a single input \(x_0\); weights \(w_k\) are fitted
+around the neighbourhood of a single input $x_0$; weights $w_k$ are fitted
 on perturbed samples drawn from a locality kernel.  Faithfulness is measured
-by a locality-weighted loss plus an \(L_0\) complexity term. :contentReference[oaicite:0]{index=0}
+by a locality-weighted loss plus an $L_0$ complexity term. :contentReference[oaicite:0]{index=0}
 
 *Pros*: model-agnostic, intuitive feature ranking.  
 *Cons*: explanations vary with kernel width; no global guarantee.
 
 #### • SHAP – *SHapley Additive exPlanations*  
 Represents any explanation as an **additive feature attribution**  
-\[
-\phi_0 + \sum_{i=1}^{M}\phi_i x_i
-\]  
+$\phi_0 + \sum_{i=1}^{M}\phi_i x_i$  
 and proves a **unique** solution that satisfies *local accuracy*, *missingness*,
 and *consistency*.  Shapley values approximate the expected marginal
 contribution of each feature over all coalitions. :contentReference[oaicite:1]{index=1}
 
 *Pros*: unified theory, local & global views.  
-*Cons*: exact values are \(2^{M}\)-costly; needs sampling for images.
+*Cons*: exact values are $2^{M}$-costly; needs sampling for images.
 
 ---
 
 ### 2.2 Gradient & CAM family
 
 #### • Grad-CAM – *Gradient-weighted Class Activation Mapping*  
-Back-propagates the class score \(y^c\) to the final conv feature map
-\(A^k\); importance weights  
-\[
-\alpha_k^c = \frac{1}{Z}\sum_{i,j}\frac{\partial y^c}{\partial A_{i j}^k}
-\]  
-generate a coarse heat-map \( \mathrm{ReLU}\bigl(\sum_k \alpha_k^c A^k\bigr)\).
+Back-propagates the class score $y^c$ to the final conv feature map
+$A^k$; importance weights  
+$\alpha_k^c = \frac{1}{Z}\sum_{i,j}\frac{\partial y^c}{\partial A_{i j}^k}$  
+generate a coarse heat-map $ \mathrm{ReLU}\bigl(\sum_k \alpha_k^c A^k\bigr)$.
 Works for any CNN-style architecture. :contentReference[oaicite:2]{index=2}
 
 #### • Guided Backprop × Grad-CAM  
@@ -70,24 +66,22 @@ class-specific focus.  Introduced in the Grad-CAM paper. :contentReference[oaici
 *Cons*: layer choice sensitive; fails on non-conv nets unless adapted.
 
 #### • SmoothGrad  
-Reduces visual noise by averaging \(n\) gradient maps from Gaussian-noised
+Reduces visual noise by averaging $n$ gradient maps from Gaussian-noised
 copies of the input:  
-\[
-\tilde{S}(x) = \frac{1}{n}\sum_{i=1}^{n} S\!\bigl(x + \mathcal{N}(0,\sigma^2)\bigr)
-\]  
-where \(S(x)\) is any saliency function. :contentReference[oaicite:4]{index=4}
+$\tilde{S}(x) = \frac{1}{n}\sum_{i=1}^{n} S\!\bigl(x + \mathcal{N}(0,\sigma^2)\bigr)$  
+where $S(x)$ is any saliency function. :contentReference[oaicite:4]{index=4}
 
 *Pros*: clearer edges.  
-*Cons*: adds \(n\)-fold compute; still inherits saliency shortcomings.
+*Cons*: adds $n$-fold compute; still inherits saliency shortcomings.
 
 ---
 
 ### 2.3 Relevance propagation
 
 #### • Layer-wise Relevance Propagation (LRP)  
-Starts with the output score \(f(x)\) and **conserves relevance** while
-propagating layer-by-layer: \( \sum_i R_i = f(x) \).  For a linear layer,
-\( R_i = \sum_j \frac{a_i w_{ij}}{\sum_i a_i w_{ij}} R_j \).  
+Starts with the output score $f(x)$ and **conserves relevance** while
+propagating layer-by-layer: $\sum_i R_i = f(x)$.  For a linear layer,
+$R_i = \sum_j \frac{a_i w_{ij}}{\sum_i a_i w_{ij}} R_j$.  
 Captures both positive and negative evidence. :contentReference[oaicite:5]{index=5}
 
 *Pros*: handles zero-grad non-linearities (ReLU dead zones).  
@@ -100,9 +94,7 @@ Captures both positive and negative evidence. :contentReference[oaicite:5]{index
 #### • Attention Rollout (Chefer *et al.*)  
 Computes *joint relevance* via a modified relevance-propagation scheme that
 traverses self-attention layers, skip-connections, and MLP blocks:  
-\[
-R^{l} = \mathrm{diag}\bigl(A^{l}\bigr) \cdot R^{l+1}
-\]  
+$R^{l} = \mathrm{diag}\bigl(A^{l}\bigr) \cdot R^{l+1}$  
 aggregated from the CLS token back to image patches.  Supports Swin and ViT
 without re-training. :contentReference[oaicite:6]{index=6}
 
@@ -115,15 +107,13 @@ without re-training. :contentReference[oaicite:6]{index=6}
 
 #### • Wasserstein Adversarial Examples (Projected Sinkhorn)  
 Defines the threat model as a **Wasserstein ball**  
-\[
-\mathcal{B}_{\varepsilon}^{W}(x) = \{\,x' : W(x, x') \le \varepsilon\}
-\]
+$\mathcal{B}_{\varepsilon}^{W}(x) = \{\,x' : W(x, x') \le \varepsilon\}$
 where \(W\) is the optimal-transport distance.  Adversarial points are
 generated via Sinkhorn-iterated projections; defence uses PGD training on the
 same geometry. :contentReference[oaicite:7]{index=7}
 
 *Pros*: captures realistic pixel-mass shifts (translation, distortion).  
-*Cons*: slower than \(L_p\); attack hyper-parameters non-trivial.
+*Cons*: slower than $L_p$; attack hyper-parameters non-trivial.
 
 ---
 
