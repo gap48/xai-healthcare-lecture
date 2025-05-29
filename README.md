@@ -1,6 +1,5 @@
 # Explainable AI for Medical Imaging ✨  
 
----
 ## Table of Contents
 1. [Overview](#overview)
 2. [Why Explainability Matters](#why-explainability-matters)
