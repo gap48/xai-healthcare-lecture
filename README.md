@@ -1,152 +1,165 @@
-# Explainable AI for Mammography  
-*A full-stack demonstration notebook for seven XAI methods + Wasserstein-robust auditing*
+# Explainable AI for Medical Imaging 🩺✨  
+_Comprehensive XAI toolbox & lecture materials_
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
-## 1 Why do we need explainability in healthcare?
-
-Diagnostic AI systems carry high-stakes consequences—from delayed cancer
-detection to overtreatment.  Regulatory bodies (e.g. FDA’s “Predetermined
-Change Control Plan”, EU AI Act) now expect **human-understandable
-justifications** for each prediction before clinical deployment.  Post-hoc
-interpretability answers three safety questions:
-
-| Trust dimension | Goal | Example from the notebook |
-|-----------------|------|---------------------------|
-| **Localization** | *Did the model focus on the lesion?* | Grad-CAM heat-map aligns with radiologist ROI |
-| **Causality proxy** | *Which features contributed most?* | SHAP bar-plot ranks mass density & margin |
-| **Robustness** | *Is the decision stable under realistic perturbations?* | Wasserstein PGD shifts image pixels yet retains diagnosis |
-
----
-
-## 2 Techniques implemented
-
-Below, each subsection gives the **intuition**, a concise **mathematical
-formulation**, **strengths / caveats**, and a link to the original paper.
-
-### 2.1 Local surrogate methods
-
-#### • LIME – *Locally Interpretable Model-agnostic Explanations*  
-Learns a sparse linear model  
-$g(x) = \sum_{k=1}^{K} w_k z_k$  
-around the neighbourhood of a single input $x_0$; weights $w_k$ are fitted
-on perturbed samples drawn from a locality kernel.  Faithfulness is measured
-by a locality-weighted loss plus an $L_0$ complexity term. :contentReference[oaicite:0]{index=0}
-
-*Pros*: model-agnostic, intuitive feature ranking.  
-*Cons*: explanations vary with kernel width; no global guarantee.
-
-#### • SHAP – *SHapley Additive exPlanations*  
-Represents any explanation as an **additive feature attribution**  
-$\phi_0 + \sum_{i=1}^{M}\phi_i x_i$  
-and proves a **unique** solution that satisfies *local accuracy*, *missingness*,
-and *consistency*.  Shapley values approximate the expected marginal
-contribution of each feature over all coalitions. :contentReference[oaicite:1]{index=1}
-
-*Pros*: unified theory, local & global views.  
-*Cons*: exact values are $2^{M}$-costly; needs sampling for images.
+## Table of Contents
+1. [Overview](#overview)
+2. [Why Explainability Matters](#why-explainability-matters)
+3. [Implemented Techniques](#implemented-techniques)  
+   &nbsp;&nbsp;3.1&nbsp; [LIME](#lime) | 3.2&nbsp; [SHAP](#shap) | 3.3&nbsp; [Grad-CAM](#grad-cam) | 3.4&nbsp; [Guided Backprop & Guided Grad-CAM](#guided-grad-cam) | 3.5&nbsp; [SmoothGrad](#smoothgrad) | 3.6&nbsp; [Layer-wise Relevance Propagation](#lrp) | 3.7&nbsp; [Attention Visualisation](#attention) | 3.8&nbsp; [Wasserstein Adversarial Robustness](#wass)  
+4. [Dataset — CBIS-DDSM](#dataset-cbis-ddsm)  
+   &nbsp;&nbsp;4.1  Dataset Setup | 4.2  Download | 4.3  Directory Structure  
+5. [Repository Structure](#repository-structure)
+6. [Installation & Quick Start](#installation--quick-start)
+7. [Results & Examples](#results--examples)
+8. [Contributing](#contributing)
+9. [Citation](#citation)
+10. [License](#license)
 
 ---
 
-### 2.2 Gradient & CAM family
-
-#### • Grad-CAM – *Gradient-weighted Class Activation Mapping*  
-Back-propagates the class score $y^c$ to the final conv feature map
-$A^k$; importance weights  
-$\alpha_k^c = \frac{1}{Z}\sum_{i,j}\frac{\partial y^c}{\partial A_{i j}^k}$  
-generate a coarse heat-map $ \mathrm{ReLU}\bigl(\sum_k \alpha_k^c A^k\bigr)$.
-Works for any CNN-style architecture. :contentReference[oaicite:2]{index=2}
-
-#### • Guided Backprop × Grad-CAM  
-Element-wise product of a **Guided Backprop** saliency map (positive
-gradients only) with Grad-CAM, yielding high-resolution overlays that keep
-class-specific focus.  Introduced in the Grad-CAM paper. :contentReference[oaicite:3]{index=3}
-
-*Pros*: human-readable, minimal compute.  
-*Cons*: layer choice sensitive; fails on non-conv nets unless adapted.
-
-#### • SmoothGrad  
-Reduces visual noise by averaging $n$ gradient maps from Gaussian-noised
-copies of the input:  
-$\tilde{S}(x) = \frac{1}{n}\sum_{i=1}^{n} S\!\bigl(x + \mathcal{N}(0,\sigma^2)\bigr)$  
-where $S(x)$ is any saliency function. :contentReference[oaicite:4]{index=4}
-
-*Pros*: clearer edges.  
-*Cons*: adds $n$-fold compute; still inherits saliency shortcomings.
+## Overview
+This repository accompanies a guest lecture on **Explainable AI (XAI) in Healthcare** delivered by **Ganesh Puthiaraju** for the graduate course **BIOENG 2195 – Practicum in Neuroimage Analysis (Spring 2025)**.  
+It provides **fully-working Python notebooks, slides, and utility scripts** that demonstrate state-of-the-art interpretability techniques on a mammography-classification pipeline trained with the **CBIS-DDSM** dataset.
 
 ---
 
-### 2.3 Relevance propagation
+## Why Explainability Matters
+> “In medical imaging, AI decisions can be life-changing. We need to understand **not just _what_ the model predicts, but _why_ it makes those predictions**.” :contentReference[oaicite:1]{index=1}
 
-#### • Layer-wise Relevance Propagation (LRP)  
-Starts with the output score $f(x)$ and **conserves relevance** while
-propagating layer-by-layer: $\sum_i R_i = f(x)$.  For a linear layer,
-$R_i = \sum_j \frac{a_i w_{ij}}{\sum_i a_i w_{ij}} R_j$.  
-Captures both positive and negative evidence. :contentReference[oaicite:5]{index=5}
-
-*Pros*: handles zero-grad non-linearities (ReLU dead zones).  
-*Cons*: multiple propagation rules; sensitive to weight initialisation.
+* **Build Trust** – transparent evidence for clinicians and patients  
+* **Enable Clinical Adoption** – integrate seamlessly into radiologist workflow  
+* **Improve Robustness** – uncover data artefacts & hidden biases  
+* **Regulatory Compliance** – satisfy FDA / MDR audit trails  
+* **Enhance Patient Safety** – reduce misdiagnoses from spurious correlations
 
 ---
 
-### 2.4 Transformer-specific insight
+## Implemented Techniques
 
-#### • Attention Rollout (Chefer *et al.*)  
-Computes *joint relevance* via a modified relevance-propagation scheme that
-traverses self-attention layers, skip-connections, and MLP blocks:  
-$R^{l} = \mathrm{diag}\bigl(A^{l}\bigr) \cdot R^{l+1}$  
-aggregated from the CLS token back to image patches.  Supports Swin and ViT
-without re-training. :contentReference[oaicite:6]{index=6}
+### LIME  <a id="lime"></a>
+_Local Interpretable Model-agnostic Explanations_ (LIME) fits an interpretable surrogate \(g\) around a point of interest \(x\):
 
-*Pros*: works when raw attention weights are uninformative.  
-*Cons*: still heat-map style; cannot isolate feature interactions.
+\[
+\underset{g \in G}{\arg\min}\; \mathcal{L}\bigl(f,\,g,\,\pi_x\bigr) + \Omega(g)
+\]
 
----
-
-### 2.5 Distribution-robust auditing
-
-#### • Wasserstein Adversarial Examples (Projected Sinkhorn)  
-Defines the threat model as a **Wasserstein ball**  
-$\mathcal{B}_{\varepsilon}^{W}(x) = \{\,x' : W(x, x') \le \varepsilon\}$
-where \(W\) is the optimal-transport distance.  Adversarial points are
-generated via Sinkhorn-iterated projections; defence uses PGD training on the
-same geometry. :contentReference[oaicite:7]{index=7}
-
-*Pros*: captures realistic pixel-mass shifts (translation, distortion).  
-*Cons*: slower than $L_p$; attack hyper-parameters non-trivial.
+* \(f\): black-box model * \(\pi_x\): locality kernel * \(\Omega\): complexity penalty  
+* Perturb ↦ Predict ↦ Weight ↦ Fit ↦ Explain ﬂow :contentReference[oaicite:2]{index=2}
 
 ---
 
-## 3 Dataset — CBIS-DDSM
+### SHAP  <a id="shap"></a>
+_Game-theoretic Shapley values_ decompose a prediction into additive feature contributions:
 
-Curated subset of the Digital Database for Screening Mammography containing
-• 2 620 studies • dicom + ROI masks • verified pathology labels.  
-Used as the running example in the notebook. :contentReference[oaicite:8]{index=8}
+\[
+\phi_i = \sum_{S \subseteq N\setminus\{i\}} \frac{|S|!\,(|N|-|S|-1)!}{|N|!}\,
+\bigl(f_{S\cup\{i\}} - f_S\bigr)
+\]
+
+* Unifies six earlier attribution methods; satisfies local accuracy, consistency & additivity :contentReference[oaicite:3]{index=3}  
 
 ---
 
-## 4 Repository structure
+### Grad-CAM  <a id="grad-cam"></a>
+_Gradient-weighted Class Activation Mapping_ produces a heat-map:
+
+\[
+\alpha_k^{c} = \frac{1}{Z}\sum_{i,j}\frac{\partial y^{c}}{\partial A^{k}_{ij}},\quad
+L^{c} = \text{ReLU}\!\left(\sum_k \alpha_k^{c} A^{k}\right)
+\]
+
+where \(A^{k}\) are feature maps of a chosen conv-layer. Highlights class-discriminative regions while retaining spatial context.   
+
+---
+
+### Guided Backprop & Guided Grad-CAM  <a id="guided-grad-cam"></a>
+* **Guided Backprop** – masks negative gradients during back-prop to sharpen details.  
+* **Guided Grad-CAM** – element-wise product of Guided-BP map and Grad-CAM heat-map → high-resolution attribution.
+
+---
+
+### SmoothGrad  <a id="smoothgrad"></a>
+Reduces noisy saliency by averaging maps over \(n\) noisy copies:
+
+\[
+\widehat{M}(x) = \frac{1}{n}\sum_{k=1}^{n} M\!\bigl(x + \mathcal{N}(0,\sigma^2)\bigr)
+\]
+
+Produces cleaner explanations and is architecture-agnostic. :contentReference[oaicite:5]{index=5}  
+
+---
+
+### Layer-wise Relevance Propagation (LRP)  <a id="lrp"></a>
+Back-propagates a **relevance score** \(R\) instead of gradients:
+
+\[
+R_j = \sum_k \frac{a_j w_{jk}}
+         {\sum_{j'} a_{j'} w_{j'k} + \varepsilon\,\text{sign}\!\Bigl(\sum_{j'} a_{j'} w_{j'k}\Bigr)}
+         \; R_k
+\]
+
+Applicable to CNNs, ViTs and hybrids; supports multiple propagation rules (\(\varepsilon\), \(\alpha\)-\(\beta\), etc.). :contentReference[oaicite:6]{index=6}  
+
+---
+
+### Attention Visualisation (ViTs / Swin)  <a id="attention"></a>
+* Extract **self-attention weights** \(A^{(l)}\in\mathbb{R}^{h\times N\times N}\) across heads \(h\) & layers \(l\).  
+* Roll-out or accumulate to show long-range patch dependencies, revealing which breast regions steer the ViT’s decision. :contentReference[oaicite:8]{index=8}  
+
+---
+
+### Wasserstein Metric Adversarial Robustness  <a id="wass"></a>
+Distributionally-robust training objective:
+
+\[
+\min_{\theta}\;\max_{\delta : W_p(\delta,0)\le \rho}\;
+\mathcal{L}\!\bigl(f_\theta(x+\delta),\,y\bigr)
+\]
+
+* Attacks shift **entire image distributions** (texture, geometry) instead of \(\ell_p\) pixels.  
+* Empirically improves mammography robustness vs PGD/FGSM baselines. :contentReference[oaicite:9]{index=9}  
+
+---
+
+## Dataset — CBIS-DDSM  <a id="dataset-cbis-ddsm"></a>
+
+### Dataset Information
+| Property | Value |
+|----------|-------|
+| Total studies | ≈ 2 620 (≈ 10 k images) |
+| Views | CC & MLO |
+| Lesion types | Mass, Calcifications |
+| Labels | **Benign (~70 %) / Malignant (~30 %)** |
+| Resolution | ≥ 4 000 × 3 000, 12–16-bit grayscale |
+| Size | ≈ 163 GB |
+
+Sources: TCIA collection notes & Kaggle mirror :contentReference[oaicite:10]{index=10}  
+
+### Download
 ```bash
-.
-├── notebooks/Explainability_in_AI.ipynb ← one-stop demo (runs in order above)
-├── slides/Explainability_in_AI.pptx ← 66-slide deck (Git LFS)
-├── src/ ← reusable helpers
-│ ├── xai/ ← LIME, SHAP, Grad-CAM, LRP …
-│ └── adversarial/ ← Wasserstein PGD utilities
-├── data/README.md ← how to fetch CBIS-DDSM
-├── requirements.txt • environment.yml
-├── SETUP_AND_USAGE.md ← install, dataset paths, Colab badge
-├── LICENSE (MIT) • CITATION.cff
-└── .gitignore
+# Option 1 — TCIA
+#  Step 1: grab manifest from
+#  https://wiki.cancerimagingarchive.net/display/Public/CBIS-DDSM
+#  Step 2: use TCIA-Downloader or NBIA Data Retriever
 
-```
----
-
-## 5 Quick start
-
-```bash
-git clone https://github.com/gap48/xai-healthcare-lecture.git
-cd xai-healthcare-lecture
-conda env create -f environment.yml && conda activate xai_healthcare
-jupyter lab notebooks/Explainability_in_AI.ipynb
-```
+# Option 2 — scripted
+python scripts/download_data.py --output_dir ./data/cbis-ddsm
+data/
+└── cbis-ddsm/
+    ├── manifest-*/               # TCIA download
+    │   └── CBIS-DDSM/
+    │       ├── Mass-Training_P_*/
+    │       ├── Mass-Test_P_*/
+    │       ├── Calc-Training_P_*/
+    │       └── Calc-Test_P_*/
+    ├── csv_files/
+    │   ├── mass_case_description_train_set.csv
+    │   ├── mass_case_description_test_set.csv
+    │   ├── calc_case_description_train_set.csv
+    │   └── calc_case_description_test_set.csv
+    └── dicom_info/
+        └── dicom_paths.txt
