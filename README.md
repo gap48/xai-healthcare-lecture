@@ -585,25 +585,20 @@ Sources: TCIA collection notes & Kaggle mirror :contentReference[oaicite:10]{ind
 
 ### Download
 ```bash
-# Option 1 — TCIA
-#  Step 1: grab manifest from
-#  https://wiki.cancerimagingarchive.net/display/Public/CBIS-DDSM
-#  Step 2: use TCIA-Downloader or NBIA Data Retriever
-
-# Option 2 — scripted
-python scripts/download_data.py --output_dir ./data/cbis-ddsm
-data/
-└── cbis-ddsm/
-    ├── manifest-*/               # TCIA download
-    │   └── CBIS-DDSM/
-    │       ├── Mass-Training_P_*/
-    │       ├── Mass-Test_P_*/
-    │       ├── Calc-Training_P_*/
-    │       └── Calc-Test_P_*/
-    ├── csv_files/
-    │   ├── mass_case_description_train_set.csv
-    │   ├── mass_case_description_test_set.csv
-    │   ├── calc_case_description_train_set.csv
-    │   └── calc_case_description_test_set.csv
-    └── dicom_info/
-        └── dicom_paths.txt
+# Visit: https://wiki.cancerimagingarchive.net/display/Public/CBIS-DDSM
+# Download the manifest file and use TCIA's data retrieval tools
+```
+```markdown
+cbis-ddsm/
+├── manifest-*/               # TCIA download
+│   └── CBIS-DDSM/                           # Dataset directory
+│       ├── mass_case_description_train_set.csv
+│       ├── mass_case_description_test_set.csv
+│       ├── calc_case_description_train_set.csv
+│       ├── calc_case_description_test_set.csv
+│       └── full mammogram images/
+│           ├── Mass-Training_P_00001_LEFT_CC/
+│           ├── Mass-Training_P_00001_LEFT_MLO/
+│           └── ...
+├── dcm_files.txt                             # Optional: List of DICOM paths
+```
