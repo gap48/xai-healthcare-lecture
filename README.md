@@ -1,9 +1,4 @@
-# Explainable AI for Medical Imaging 🩺✨  
-_Comprehensive XAI toolbox & lecture materials_
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
----
+# Explainable AI for Medical Imaging ✨  
 
 ## Table of Contents
 1. [Overview](#overview)
