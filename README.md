@@ -28,9 +28,7 @@ formulation**, **strengths / caveats**, and a link to the original paper.
 
 #### • LIME – *Locally Interpretable Model-agnostic Explanations*  
 Learns a sparse linear model  
-$
-g(x) = \sum_{k=1}^{K} w_k z_k
-$  
+$g(x) = \sum_{k=1}^{K} w_k z_k$  
 around the neighbourhood of a single input \(x_0\); weights \(w_k\) are fitted
 on perturbed samples drawn from a locality kernel.  Faithfulness is measured
 by a locality-weighted loss plus an \(L_0\) complexity term. :contentReference[oaicite:0]{index=0}
