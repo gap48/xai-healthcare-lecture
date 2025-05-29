@@ -502,7 +502,7 @@ Uses Wasserstein distance to create adversarial examples that are more realistic
 
 **Distributionally-robust training objective:**
 
-$$\min_{\theta}\;\max_{\delta : W_p(\delta,0)\le \rho}\; \mathcal{L}\!\bigl(f_\theta(x+\delta),\,y\bigr)$$
+$$\min_{\theta}\ \max_{\delta : W_p(\delta,0)\le \rho}\ \mathcal{L}\bigl(f_\theta(x+\delta),y\bigr)$$
 
 where:
 - $\mu$ is a distribution over possible perturbations around $x$
