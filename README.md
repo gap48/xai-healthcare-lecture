@@ -16,7 +16,7 @@ This repository accompanies a guest lecture on **Explainable AI (XAI) in Healthc
 ---
 
 ## Why Explainability Matters
-> “In medical imaging, AI decisions can be life-changing. We need to understand **not just _what_ the model predicts, but _why_ it makes those predictions**.” :contentReference[oaicite:1]{index=1}
+> “In medical imaging, AI decisions can be life-changing. We need to understand **not just _what_ the model predicts, but _why_ it makes those predictions**.” 
 
 * **Build Trust** – transparent evidence for clinicians and patients  
 * **Enable Clinical Adoption** – integrate seamlessly into radiologist workflow  
