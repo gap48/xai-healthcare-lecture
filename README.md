@@ -11,8 +11,7 @@
 ---
 
 ## Overview
-This repository accompanies a guest lecture on **Explainable AI (XAI) in Healthcare** delivered by **Ganesh Puthiaraju** for the graduate course **BIOENG 2195 – Practicum in Neuroimage Analysis (Spring 2025)**.  
-It provides **fully-working Python notebooks, slides, and utility scripts** that demonstrate state-of-the-art interpretability techniques on a mammography-classification pipeline trained with the **CBIS-DDSM** dataset.
+This repository accompanies a guest lecture on **Explainable AI (XAI) in Healthcare** delivered by **Ganesh Puthiaraju** for the graduate course **BIOENG 2195 – Practicum in Neuroimage Analysis (Spring 2025)**. It provides **fully-working Python notebooks, slides, and utility scripts** that demonstrate state-of-the-art interpretability techniques on a mammography-classification pipeline trained with the **CBIS-DDSM** dataset.
 
 ---
 
