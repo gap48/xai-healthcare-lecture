@@ -28,9 +28,9 @@ formulation**, **strengths / caveats**, and a link to the original paper.
 
 #### • LIME – *Locally Interpretable Model-agnostic Explanations*  
 Learns a sparse linear model  
-\[
+$
 g(x) = \sum_{k=1}^{K} w_k z_k
-\]  
+$  
 around the neighbourhood of a single input \(x_0\); weights \(w_k\) are fitted
 on perturbed samples drawn from a locality kernel.  Faithfulness is measured
 by a locality-weighted loss plus an \(L_0\) complexity term. :contentReference[oaicite:0]{index=0}
@@ -138,7 +138,7 @@ Used as the running example in the notebook. :contentReference[oaicite:8]{index=
 ---
 
 ## 4 Repository structure
-
+```bash
 .
 ├── notebooks/Explainability_in_AI.ipynb ← one-stop demo (runs in order above)
 ├── slides/Explainability_in_AI.pptx ← 66-slide deck (Git LFS)
@@ -151,10 +151,7 @@ Used as the running example in the notebook. :contentReference[oaicite:8]{index=
 ├── LICENSE (MIT) • CITATION.cff
 └── .gitignore
 
-yaml
-Copy
-Edit
-
+```
 ---
 
 ## 5 Quick start
@@ -164,3 +161,4 @@ git clone https://github.com/gap48/xai-healthcare-lecture.git
 cd xai-healthcare-lecture
 conda env create -f environment.yml && conda activate xai_healthcare
 jupyter lab notebooks/Explainability_in_AI.ipynb
+```
