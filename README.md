@@ -10,13 +10,7 @@ _Comprehensive XAI toolbox & lecture materials_
 3. [Implemented Techniques](#implemented-techniques)  
    &nbsp;&nbsp;3.1&nbsp; [LIME](#lime) | 3.2&nbsp; [SHAP](#shap) | 3.3&nbsp; [Grad-CAM](#grad-cam) | 3.4&nbsp; [Guided Backprop & Guided Grad-CAM](#guided-grad-cam) | 3.5&nbsp; [SmoothGrad](#smoothgrad) | 3.6&nbsp; [Layer-wise Relevance Propagation](#lrp) | 3.7&nbsp; [Attention Visualisation](#attention) | 3.8&nbsp; [Wasserstein Adversarial Robustness](#wass)  
 4. [Dataset — CBIS-DDSM](#dataset-cbis-ddsm)  
-   &nbsp;&nbsp;4.1  Dataset Setup | 4.2  Download | 4.3  Directory Structure  
-5. [Repository Structure](#repository-structure)
 6. [Installation & Quick Start](#installation--quick-start)
-7. [Results & Examples](#results--examples)
-8. [Contributing](#contributing)
-9. [Citation](#citation)
-10. [License](#license)
 
 ---
 
