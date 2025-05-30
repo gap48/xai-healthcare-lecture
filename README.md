@@ -1,12 +1,18 @@
 # Explainable AI for Medical Imaging ✨  
 
 ## Table of Contents
-1. [Overview](#overview)
-2. [Why Explainability Matters](#why-explainability-matters)
+1. [Overview](#overview)  
+2. [Why Explainability Matters](#why-explainability-matters)  
 3. [Implemented Techniques](#implemented-techniques)  
-   &nbsp;&nbsp;3.1&nbsp; [LIME](#lime) | 3.2&nbsp; [SHAP](#shap) | 3.3&nbsp; [Grad-CAM](#grad-cam) | 3.4&nbsp; [Guided Backprop & Guided Grad-CAM](#guided-grad-cam) | 3.5&nbsp; [SmoothGrad](#smoothgrad) | 3.6&nbsp; [Layer-wise Relevance Propagation](#lrp) | 3.7&nbsp; [Attention Visualisation](#attention) | 3.8&nbsp; [Wasserstein Adversarial Robustness](#wass)  
-4. [Dataset — CBIS-DDSM](#dataset-cbis-ddsm)  
-
+&nbsp;&nbsp;&nbsp;3.1&nbsp; [LIME](#lime)  
+&nbsp;&nbsp;&nbsp;3.2&nbsp; [SHAP](#shap)  
+&nbsp;&nbsp;&nbsp;3.3&nbsp; [Grad-CAM](#grad-cam)  
+&nbsp;&nbsp;&nbsp;3.4&nbsp; [Guided Backprop & Guided Grad-CAM](#guided-grad-cam)  
+&nbsp;&nbsp;&nbsp;3.5&nbsp; [SmoothGrad](#smoothgrad)  
+&nbsp;&nbsp;&nbsp;3.6&nbsp; [Layer-wise Relevance Propagation](#lrp)  
+&nbsp;&nbsp;&nbsp;3.7&nbsp; [Attention Visualisation](#attention)  
+&nbsp;&nbsp;&nbsp;3.8&nbsp; [Wasserstein Adversarial Robustness](#wass)  
+4. [Dataset — CBIS-DDSM](#dataset-cbis-ddsm)
 ---
 
 ## Overview
